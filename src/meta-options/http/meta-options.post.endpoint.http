@@ -1,0 +1,5 @@
+POST http://localhost:3000/meta-options
+Content-Type:application/json
+{
+  "metaValue":"{\"keyStr1\":\"value11\",\"keyNum2\":21,\"keyBool3\":false}"
+}

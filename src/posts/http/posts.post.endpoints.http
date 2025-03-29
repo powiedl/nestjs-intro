@@ -1,0 +1,18 @@
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+  "title":"What's new with NestJS",
+  "postType":"post",
+  "slug":"new-with-nestjs",
+  "status":"draft",
+  "content":"test content",
+  "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
+  "featuredImageUrl":"http://bla.com/image.png",
+  "publishedOn":"2025-03-16T07:04:03+0000",
+  "tags":["nestjs","typescript"],
+  "metaOptions": [
+    {"key":"testKey", "value":"testValue"},
+    {"key":"prodKey","value":"prodValue"}
+  ]
+}

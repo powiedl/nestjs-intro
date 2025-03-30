@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/createPostDto';
@@ -21,8 +31,8 @@ export class PostsController {
     description: 'You get a 201 response, if your post is created successfully',
   })
   public createPost(@Body() createPostDto: CreatePostDto) {
-    console.log(createPostDto);
-    return 'you created a post';
+    //console.log('posts.controller,create');
+    return this.postsService.create(createPostDto);
   }
 
   @Patch()
@@ -34,5 +44,26 @@ export class PostsController {
   })
   public updatePost(@Body() patchPostsDto: PatchPostDto) {
     console.log(patchPostsDto);
+  }
+
+  @Delete('/:id')
+  @ApiOperation({ summary: 'delete a particular post' })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response, if the post was deleted successful.',
+  })
+  public async deleteRouteParam(@Param('id', ParseIntPipe) id: number) {
+    console.log('posts controller, delete via route parameter, post id', id);
+    return await this.postsService.delete(id);
+  }
+  @Delete('')
+  @ApiOperation({ summary: 'delete a particular post' })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response, if the post was deleted successful.',
+  })
+  public async deleteQuery(@Query('id', ParseIntPipe) id: number) {
+    console.log('posts controller, delete via query parameter, post id', id);
+    return await this.postsService.delete(id);
   }
 }

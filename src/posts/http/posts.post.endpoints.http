@@ -2,17 +2,31 @@ POST http://localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title":"What's new with NestJS",
+  "title":"What's new with NestJS - now with cascade",
   "postType":"post",
-  "slug":"new-with-nestjs",
+  "slug":"new-with-nestjs-cascade",
   "status":"draft",
   "content":"test content",
   "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
   "featuredImageUrl":"http://bla.com/image.png",
   "publishedOn":"2025-03-16T07:04:03+0000",
-  "tags":["nestjs","typescript"],
-  "metaOptions": [
-    {"key":"testKey", "value":"testValue"},
-    {"key":"prodKey","value":"prodValue"}
-  ]
+  //"tags":["nestjs","typescript"],
+  "metaOptions": {
+    "metaValue": "{\"sidebarEnabled\":false,\"footerActive\":true}"
+  }
+}
+
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+{
+  "title":"What's new with NestJS - without metaOptions",
+  "postType":"post",
+  "slug":"new-with-nestjs-without-metaoptions",
+  "status":"draft",
+  "content":"test content",
+  "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
+  "featuredImageUrl":"http://bla.com/image.png",
+  "publishedOn":"2025-03-16T07:04:03+0000"
+  //"tags":["nestjs","typescript"],
 }

@@ -2,6 +2,7 @@ import {
   IsArray,
   //  IsDate,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,
@@ -18,7 +19,6 @@ import { PostType } from '../enum/postType.enum';
 import { PostStatus } from '../enum/postStatus.enum';
 import { CreatePostMetaOptionsDto } from '../../meta-options/dtos/create-post-metaoptions-dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-const tagMinLength = 3;
 
 export class CreatePostDto {
   @IsString()
@@ -101,8 +101,7 @@ export class CreatePostDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(tagMinLength, { each: true })
+  @IsInt({ each: true })
   // @ApiPropertyOptional({
   //   description:
   //     'Array of tags passed as string values (each tag must have at least 3 characters)',
@@ -112,11 +111,10 @@ export class CreatePostDto {
     type: 'array',
     //description: 'an array of tags you want to add to your post',
     items: {
-      type: 'string',
-      description: 'The tags you want to add to your post',
-      minLength: tagMinLength,
-      example: 'nestjs',
-      examples: ['nestjs', 'typescript'],
+      type: 'int',
+      description: 'The id of the tags you want to add to your post',
+      example: 1,
+      examples: [1, 3],
       //examples: ['nestjs', 'typescript'],
 
       // this does not work - es zeigt tags dann als OrderedMap an
@@ -127,7 +125,7 @@ export class CreatePostDto {
     },
     //example: ['nestjs', 'typescript'],
   })
-  tags?: string[];
+  tags?: number[]; // weil es die ID der betreffenden Tags ist
 
   @IsOptional()
   @ValidateNested({ each: true })
@@ -147,4 +145,13 @@ export class CreatePostDto {
     },
   })
   metaOptions?: CreatePostMetaOptionsDto | null;
+
+  @IsNotEmpty()
+  @IsInt()
+  @ApiProperty({
+    type: 'integer',
+    required: true,
+    example: 1,
+  })
+  authorId: number;
 }

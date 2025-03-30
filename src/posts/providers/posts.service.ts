@@ -4,23 +4,25 @@ import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePostDto } from '../dtos/createPostDto';
-import { MetaOption } from 'src/meta-options/meta-option.entity';
+import { TagsService } from 'src/tags/providers/tags.service';
+import { PatchPostDto } from '../dtos/patch-post.dto';
 
 @Injectable()
 export class PostsService {
   constructor(
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
-    @InjectRepository(MetaOption)
-    private metaOptionsRepository: Repository<MetaOption>,
+    private readonly tagsService: TagsService,
     private readonly usersService: UsersService,
   ) {}
-  public async findAll(userId: string) {
+  public async findAll(userId: number) {
     // Users service
     // find a user
-    const user = this.usersService.findOneById(userId);
+    const author = await this.usersService.findOneById(userId);
+    console.log('searching posts of author', author);
 
-    let posts = await this.postsRepository.find({
+    const posts = await this.postsRepository.find({
+      where: { author },
       select: {
         metaOptions: {
           id: true,
@@ -29,6 +31,8 @@ export class PostsService {
       },
       relations: {
         metaOptions: true,
+        author: true,
+        tags: true,
       },
     });
     return posts;
@@ -47,9 +51,19 @@ export class PostsService {
       await this.metaOptionsRepository.save(metaOptions);
     }
 */
+    // find author from database based on authorId
+    const author = await this.usersService.findOneById(createPostDto.authorId);
+
+    // find the associated tags
+    const tags = await this.tagsService.findMultipleTags(createPostDto.tags);
+
     // create post
     //    console.log('posts.service, create, 2');
-    let post = this.postsRepository.create(createPostDto);
+    const post = this.postsRepository.create({
+      ...createPostDto,
+      author,
+      tags,
+    });
 
     /* umständlich - statt dessen verwenden wir cascade (damit "verschwindet" die Dependency to meta Options bzw. wird sie über die Datenbank selbst realisiert)
     // add metaOptions to the post
@@ -84,5 +98,35 @@ export class PostsService {
     await this.postsRepository.delete(id);
     // confirmation message
     return { deleted: true, id };
+  }
+
+  public async update(patchPostDto: PatchPostDto) {
+    // find the tags
+    const tags = patchPostDto.tags
+      ? await this.tagsService.findMultipleTags(patchPostDto.tags)
+      : [];
+
+    // find the post based on the id
+    const post = await this.postsRepository.findOneBy({
+      id: patchPostDto.id,
+    });
+
+    // update the properties of the post
+    // post = { ...post, ... patchPostDto} // funktioniert nicht, weil wenn man die id mitschickt, glaubt TypeORM dass es ein neues Entity anlegen muss, was mit einem duplicate error quittiert wird
+    post.title = patchPostDto.title ?? post.title; // if patchPostDto.title exists, posts.title is set to it, otherwise it is set to itself (so remains unchanged)
+    post.content = patchPostDto.content ?? post.content;
+    post.status = patchPostDto.status ?? post.status;
+    post.postType = patchPostDto.postType ?? post.postType;
+    post.slug = patchPostDto.slug ?? post.slug;
+    post.featuredImageUrl =
+      patchPostDto.featuredImageUrl ?? post.featuredImageUrl;
+    post.publishedOn = patchPostDto.publishedOn ?? post.publishedOn;
+    //post.metaOptions = patchPostDto.metaOptions ?? post.metaOptions; // does not work, maybe we add this later ...
+
+    // assign the new tags
+    post.tags = tags;
+
+    // save the post and return it
+    return await this.postsRepository.save(post);
   }
 }

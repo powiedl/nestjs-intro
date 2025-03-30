@@ -1,7 +1,17 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { PostType } from './enum/postType.enum';
 import { PostStatus } from './enum/postStatus.enum';
 import { MetaOption } from 'src/meta-options/meta-option.entity';
+import { User } from 'src/users/user.entity';
+import { Tag } from 'src/tags/tag.entity';
 
 @Entity()
 export class Post {
@@ -69,6 +79,13 @@ export class Post {
     eager: true,
   })
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
+  author: User;
+
+  @ManyToMany(() => Tag, (tag) => tag.posts)
+  @JoinTable()
+  tags?: Tag[];
 
   // work on these in lectures on relationships
   // @Column({

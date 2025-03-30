@@ -4,7 +4,7 @@ Content-Type: application/json
 {
   "title":"What's new with NestJS - now with cascade",
   "postType":"post",
-  "slug":"new-with-nestjs-cascade",
+  "slug":"new-with-nestjs-cascade-with-author-and-tags",
   "status":"draft",
   "content":"test content",
   "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
@@ -13,7 +13,9 @@ Content-Type: application/json
   //"tags":["nestjs","typescript"],
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\":false,\"footerActive\":true}"
-  }
+  },
+  "authorId":2,
+  "tags":[1,2]
 }
 
 POST http://localhost:3000/posts
@@ -22,11 +24,12 @@ Content-Type: application/json
 {
   "title":"What's new with NestJS - without metaOptions",
   "postType":"post",
-  "slug":"new-with-nestjs-without-metaoptions",
+  "slug":"slug-30-4",
   "status":"draft",
   "content":"test content",
   "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
   "featuredImageUrl":"http://bla.com/image.png",
-  "publishedOn":"2025-03-16T07:04:03+0000"
-  //"tags":["nestjs","typescript"],
+  "publishedOn":"2025-03-16T07:04:03+0000",
+  "authorId":3,
+  "tags":[5,6]
 }

@@ -1,0 +1,7 @@
+POST http://localhost:3000/tags
+Content-Type:application/json
+{
+  "name": "httpYac-test",
+  "slug": "httpyac-test-tag",
+  "description": "from httpYac"
+}

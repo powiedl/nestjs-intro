@@ -19,7 +19,7 @@ import { PatchPostDto } from './dtos/patch-post.dto';
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
   @Get('/:userId?')
-  public getPosts(@Param('userId') userId: string) {
+  public getPosts(@Param('userId', ParseIntPipe) userId: number) {
     return this.postsService.findAll(userId);
   }
   @Post()
@@ -42,8 +42,8 @@ export class PostsController {
     description:
       'Yor get a 200 response, if the update oft the post was successful.',
   })
-  public updatePost(@Body() patchPostsDto: PatchPostDto) {
-    console.log(patchPostsDto);
+  public updatePost(@Body() patchPostDto: PatchPostDto) {
+    return this.postsService.update(patchPostDto);
   }
 
   @Delete('/:id')

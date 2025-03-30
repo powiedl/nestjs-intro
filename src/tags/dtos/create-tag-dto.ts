@@ -47,5 +47,6 @@ export class CreateTagDto {
   @IsUrl()
   @MaxLength(1024)
   @MinLength(3)
+  @ApiPropertyOptional()
   featuredImageUrl?: string;
 }

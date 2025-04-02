@@ -5,28 +5,35 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
-import { User } from './users/user.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { appConfig } from './config/app.config';
 
 // User created modules
+const ENV = process.env.NODE_ENV.trim();
+console.log(`+${ENV}+`);
 
 @Module({
   imports: [
     UsersModule,
     PostsModule,
     AuthModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: !ENV ? '.env' : `.env.${ENV}`,
+      load: [appConfig],
+    }),
     TypeOrmModule.forRootAsync({
-      imports: [],
-      inject: [],
-      useFactory: () => ({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         //entities: [User],
         autoLoadEntities: true,
         synchronize: true, // ACHTUNG: NUR in Development verwenden, es kann zu Datenverlust führen!
         port: 5432,
+        //username: configService.get('database.user'), // if I use this line it doesn't work
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         host: process.env.DB_HOST,

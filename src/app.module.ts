@@ -32,7 +32,7 @@ console.log(`+${ENV}+`);
         //entities: [User],
         autoLoadEntities: true,
         synchronize: true, // ACHTUNG: NUR in Development verwenden, es kann zu Datenverlust führen!
-        port: 5432,
+        port: configService.get<number>('database.port'),
         //username: configService.get('database.user'), // if I use this line it doesn't work
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,

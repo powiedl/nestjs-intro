@@ -1,6 +1,7 @@
 export const appConfig = () => {
-  console.log('appConfig', process.env);
-  return {
+  //console.log('appConfig', process.env);
+  console.log('appConfig DB_USERNAME:', process.env.DB_USERNAME);
+  const myConfig = {
     environment: process.env.NODE_ENV?.trim() || 'production',
     database: {
       host: process.env.DB_HOST || 'localhost',
@@ -12,4 +13,6 @@ export const appConfig = () => {
       autoLoadEntities: process.env.DB_AUTOLOAD === 'true' ? true : false,
     },
   };
+  console.log('appConfig, myConfig:', myConfig);
+  return myConfig;
 };

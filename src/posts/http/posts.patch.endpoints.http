@@ -1,7 +1,7 @@
 PATCH http://localhost:3000/posts
 Content-Type: application/json
-{"id":11,
+{"id":13,
 "postType":"post",
-"tags":[2],
+"tags":[2,7],
 "metaOptions": { "metaValue": "{\"newKey\":true}"}
 }

@@ -1,4 +1,9 @@
-import { Body, Injectable } from '@nestjs/common';
+import {
+  Body,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { UsersService } from 'src/users/providers/user.service';
 import { Post } from '../post.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -102,14 +107,41 @@ export class PostsService {
 
   public async update(patchPostDto: PatchPostDto) {
     // find the tags
-    const tags = patchPostDto.tags
-      ? await this.tagsService.findMultipleTags(patchPostDto.tags)
-      : [];
+    let tags = undefined;
+    try {
+      tags = patchPostDto.tags
+        ? await this.tagsService.findMultipleTags(patchPostDto.tags)
+        : [];
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        { description: 'error during fetch existing user' },
+      );
+    }
+    if (patchPostDto.tags && patchPostDto.tags.length !== tags?.length) {
+      throw new NotFoundException(
+        'Unable to find the tags needed for this post',
+        { description: 'tags not found' },
+      );
+    }
 
     // find the post based on the id
-    const post = await this.postsRepository.findOneBy({
-      id: patchPostDto.id,
-    });
+    let post = undefined;
+    try {
+      post = await this.postsRepository.findOneBy({
+        id: patchPostDto.id,
+      });
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        { description: 'error during fetch existing user' },
+      );
+    }
+    if (!post) {
+      throw new NotFoundException('Unable to find the post to update', {
+        description: 'post not found',
+      });
+    }
 
     // update the properties of the post
     // post = { ...post, ... patchPostDto} // funktioniert nicht, weil wenn man die id mitschickt, glaubt TypeORM dass es ein neues Entity anlegen muss, was mit einem duplicate error quittiert wird
@@ -127,6 +159,13 @@ export class PostsService {
     post.tags = tags;
 
     // save the post and return it
-    return await this.postsRepository.save(post);
+    try {
+      return await this.postsRepository.save(post);
+    } catch (error) {
+      throw new RequestTimeoutException(
+        'Unable to process your request at the moment, please try later',
+        { description: 'error during fetch existing user' },
+      );
+    }
   }
 }

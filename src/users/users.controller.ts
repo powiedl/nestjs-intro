@@ -8,12 +8,14 @@ import {
   Body,
   ParseIntPipe,
   DefaultValuePipe,
+  BadRequestException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUsersParamDto } from './dtos/get-users-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { UsersService } from './providers/user.service';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CreateManyUsersDto } from './dtos/create-many-users.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -78,6 +80,13 @@ export class UsersController {
     const createdUserEntity = this.usersService.createUser(createUserDto);
     console.log(createdUserEntity);
     return createdUserEntity;
+  }
+
+  @Post('create-many')
+  public createManyUsers(@Body() createUsersDto: CreateManyUsersDto) {
+    let createdUsersEntity = undefined;
+    createdUsersEntity = this.usersService.createMany(createUsersDto);
+    return createdUsersEntity;
   }
 
   @Patch()

@@ -10,6 +10,7 @@ import environmentValidation from './config/environment.validation';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { appConfig } from './config/app.config';
+import { PaginationModule } from './common/pagination/pagination.module';
 
 // User created modules
 const ENV = process.env.NODE_ENV.trim();
@@ -44,6 +45,7 @@ console.log(`+${ENV}+`);
     }),
     TagsModule,
     MetaOptionsModule,
+    PaginationModule,
     // /* synchrones verbinden mit der Datenbank */
     // TypeOrmModule.forRoot({
     //   type: 'postgres',

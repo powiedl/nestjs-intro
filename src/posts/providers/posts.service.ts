@@ -11,6 +11,9 @@ import { Repository } from 'typeorm';
 import { CreatePostDto } from '../dtos/createPostDto';
 import { TagsService } from 'src/tags/providers/tags.service';
 import { PatchPostDto } from '../dtos/patch-post.dto';
+import { GetPostsDto } from '../dtos/get-posts.dto';
+import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
+import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
 
 @Injectable()
 export class PostsService {
@@ -19,10 +22,23 @@ export class PostsService {
     private postsRepository: Repository<Post>,
     private readonly tagsService: TagsService,
     private readonly usersService: UsersService,
+    private readonly paginationProvider: PaginationProvider,
   ) {}
-  public async findAll(userId: number) {
+  public async findAll(
+    postQuery: GetPostsDto,
+    userId: string,
+  ): Promise<Paginated<Post>> {
+    let posts = await this.paginationProvider.paginateQuery(
+      {
+        limit: postQuery.limit,
+        page: postQuery.page,
+      },
+      this.postsRepository,
+    );
+    return posts;
     // Users service
     // find a user
+    /*
     const author = await this.usersService.findOneById(userId);
     console.log('searching posts of author', author);
 
@@ -39,8 +55,11 @@ export class PostsService {
         author: true,
         tags: true,
       },
+      take: postQuery.limit,
+      skip: (postQuery.page - 1) * postQuery.limit,
     });
     return posts;
+*/
   }
   /**
    * Creating new posts

@@ -1,11 +1,9 @@
 import {
-  BadRequestException,
   forwardRef,
   HttpException,
   HttpStatus,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   RequestTimeoutException,
 } from '@nestjs/common';
@@ -19,6 +17,8 @@ import profileConfig from '../config/profile.config';
 import { ConfigType } from '@nestjs/config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
+import { CreateUserProvider } from './create-user.provider';
+import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -40,6 +40,10 @@ export class UsersService {
 
     /** Inject createManyProvider */
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
+
+    private readonly createUserProvider: CreateUserProvider,
+
+    private readonly findOneUserByEmailProvider: FindOneUserByEmailProvider,
 
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
@@ -76,45 +80,8 @@ export class UsersService {
       },
     );
   }
-
-  public async createUser(
-    createUserDto: CreateUserDto,
-  ): Promise<User | undefined> {
-    if (!this.authService.isAuth()) {
-      //throw new Error('you must be authenticated');
-      console.log('you must be authenticated to use this function');
-      return;
-    }
-    // check if user exists
-    let existingUser = undefined;
-    try {
-      existingUser = await this.usersRepository.findOne({
-        where: { email: createUserDto.email },
-      });
-    } catch (error) {
-      // Might save the details of the exception
-      // Information which is sensitive
-      console.log('error inside createUser', error);
-      throw new RequestTimeoutException(
-        'Unable to process your request at the moment, please try later',
-        { description: 'error during fetch existing user' },
-      );
-    }
-    if (existingUser) {
-      throw new BadRequestException(
-        'The user already exists, please check your email.',
-      );
-    }
-    let newUser = this.usersRepository.create(createUserDto);
-    try {
-      newUser = await this.usersRepository.save(newUser);
-      return newUser;
-    } catch (error) {
-      throw new InternalServerErrorException(
-        'something went wrong while saving the user to the database',
-        error,
-      );
-    }
+  public async createUser(createUserDto: CreateUserDto) {
+    this.createUserProvider.createUser(createUserDto);
   }
 
   // Find a user by ID
@@ -138,6 +105,9 @@ export class UsersService {
     return user;
   }
 
+  public async findOneByEmail(email: string) {
+    return await this.findOneUserByEmailProvider.findOneByEmail(email);
+  }
   public async createMany(createUsersDto: CreateManyUsersDto) {
     return await this.usersCreateManyProvider.createMany(createUsersDto);
   }

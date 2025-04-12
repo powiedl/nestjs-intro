@@ -1,25 +1,26 @@
 POST http://localhost:3000/users
 Content-Type: application/json
 {
-  "firstName":"powidl3",
+  "firstName":"powidl5",
   "lastName":"Doe",
-  "email":"powidl3@doe.com",
+  "email":"powidl5@doe.com",
   "password":"password123!"
 }
 
 POST http://localhost:3000/users/create-many
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InBvd2lkbDJAZG9lLmNvbSIsImlhdCI6MTc0NDE3MDE1NCwiZXhwIjoxNzQ0MTczNzU0LCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.YMIiW9hSP98uYY8xuwopZRdxoVHsZJuFc_dMgPLcxho
 {"users":[
   {
-    "firstName":"powidl2",
+    "firstName":"powidl6",
     "lastName":"Doe",
-    "email":"powidl2@doe.com",
+    "email":"powidl6@doe.com",
     "password":"password123!"
   },
   {
-    "firstName":"powidl3",
+    "firstName":"powidl7",
     "lastName":"Doe",
-    "email":"powidl3@doe.com",
+    "email":"powidl7@doe.com",
     "password":"password123!"
   }
 ]

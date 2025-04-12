@@ -28,11 +28,6 @@ export class CreateUserProvider {
   public async createUser(
     createUserDto: CreateUserDto,
   ): Promise<User | undefined> {
-    if (!this.authService.isAuth()) {
-      //throw new Error('you must be authenticated');
-      console.log('you must be authenticated to use this function');
-      return;
-    }
     // check if user exists
     let existingUser = undefined;
     try {

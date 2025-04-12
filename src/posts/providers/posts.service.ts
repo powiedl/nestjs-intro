@@ -14,6 +14,8 @@ import { PatchPostDto } from '../dtos/patch-post.dto';
 import { GetPostsDto } from '../dtos/get-posts.dto';
 import { PaginationProvider } from 'src/common/pagination/providers/pagination.provider';
 import { Paginated } from 'src/common/pagination/interfaces/paginated.interface';
+import { CreatePostProvider } from './create-post.provider';
+import { ActiveUserData } from 'src/auth/interfaces/active-user-data.interface';
 
 @Injectable()
 export class PostsService {
@@ -23,6 +25,7 @@ export class PostsService {
     private readonly tagsService: TagsService,
     private readonly usersService: UsersService,
     private readonly paginationProvider: PaginationProvider,
+    private readonly createPostProvider: CreatePostProvider,
   ) {}
   public async findAll(
     postQuery: GetPostsDto,
@@ -64,7 +67,13 @@ export class PostsService {
   /**
    * Creating new posts
    */
-  public async create(@Body() createPostDto: CreatePostDto) {
+  public async create(
+    @Body() createPostDto: CreatePostDto,
+    user: ActiveUserData,
+  ) {
+    // ausgelagerter Provider
+    return await this.createPostProvider.create(createPostDto, user);
+    // alte Implementierung
     //console.log('posts.service, create, 1');
     /* umständlich - statt dessen verwenden wir cascade (damit "verschwindet" die Dependency to meta Options bzw. wird sie über die Datenbank selbst realisiert)
     // create metaOptions
@@ -75,6 +84,7 @@ export class PostsService {
       await this.metaOptionsRepository.save(metaOptions);
     }
 */
+    /*
     // find author from database based on authorId
     const author = await this.usersService.findOneById(createPostDto.authorId);
 
@@ -98,7 +108,7 @@ export class PostsService {
     // return post to the user
     //console.log('posts.service, create, 3');
 
-    return await this.postsRepository.save(post);
+    //    return await this.postsRepository.save(post);
   }
 
   public async delete(id: number) {

@@ -1,21 +1,21 @@
 POST http://localhost:3000/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJlbWFpbCI6InBvd2lkbDJAZG9lLmNvbSIsImlhdCI6MTc0NDQzMDgyOCwiZXhwIjoxNzQ0NDM0NDI4LCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.O5AzyFmmDwcDFixZccoiC60oyA04en5SJmt5CyKD7aE
 
 {
-  "title":"What's new with NestJS - now with cascade",
+  "title":"What's new with NestJS - 1204b",
   "postType":"post",
-  "slug":"new-with-nestjs-cascade-with-author-and-tags",
+  "slug":"new-with-nestjs-1204b",
   "status":"draft",
   "content":"test content",
   "schema":"{\r\n \"@context\":\"https:\/\/schema.org\",\r\n\"@type\":\"Person\"\r\n }",
   "featuredImageUrl":"http://bla.com/image.png",
-  "publishedOn":"2025-03-16T07:04:03+0000",
-  //"tags":["nestjs","typescript"],
+  //"publishedOn":"2025-04-12T04:10:59.000+04:00",
+  "tags":["nestjs","typescript"],
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\":false,\"footerActive\":true}"
   },
-  "authorId":2,
-  "tags":[1,2]
+  "tags":[1,5]
 }
 
 POST http://localhost:3000/posts

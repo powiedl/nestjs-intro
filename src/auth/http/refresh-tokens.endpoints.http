@@ -1,5 +1,5 @@
 POST http://localhost:3000/auth/refresh-tokens
 Content-Type: application/json
 {
-  "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJpYXQiOjE3NDQ0NDI3NTcsImV4cCI6MTc0NDYxNTU1NywiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.5pjq-7hD2PmRpR7wmkTrt-VYyiljvgidIgJOmeZND8A"
+  "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE3LCJpYXQiOjE3NDQ1MTM4NjEsImV4cCI6MTc0NDY4NjY2MSwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.v6W259vvgAM1Bj2QAaPdCcj3b72l2VzEIco4mpsGDj0"
 }

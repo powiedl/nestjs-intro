@@ -19,6 +19,9 @@ import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { CreateUserProvider } from './create-user.provider';
 import { FindOneUserByEmailProvider } from './find-one-user-by-email.provider';
+import { FindOneUserByGoogleIdProvider } from './find-one-user-by-google-id.provider';
+import { CreateGoogleUserProvider } from './create-google-user.provider';
+import { GoogleUser } from '../interfaces/google-user.interface';
 
 /**
  * Class to connect to Users table and perform business operations
@@ -53,6 +56,10 @@ export class UsersService {
      */
     @Inject()
     private readonly dataSource: DataSource,
+
+    private readonly findOneUserByGoogleIdProvider: FindOneUserByGoogleIdProvider,
+
+    private readonly createGoogleUserProvider: CreateGoogleUserProvider,
   ) {}
   /**
    * get all users - with respect to pagination
@@ -81,7 +88,7 @@ export class UsersService {
     );
   }
   public async createUser(createUserDto: CreateUserDto) {
-    this.createUserProvider.createUser(createUserDto);
+    return await this.createUserProvider.createUser(createUserDto);
   }
 
   // Find a user by ID
@@ -110,5 +117,13 @@ export class UsersService {
   }
   public async createMany(createUsersDto: CreateManyUsersDto) {
     return await this.usersCreateManyProvider.createMany(createUsersDto);
+  }
+
+  public async findOneByGoogleId(googleId: string) {
+    return await this.findOneUserByGoogleIdProvider.findOneByGoogleId(googleId);
+  }
+
+  public async createGoogleUser(googleUser: GoogleUser) {
+    return await this.createGoogleUserProvider.createGoogleUser(googleUser);
   }
 }

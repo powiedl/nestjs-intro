@@ -22,6 +22,37 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
+## My .env.development content - with dummy values ...
+
+```
+# general
+API_VERSION=0.1.2
+
+# PostgreSQL
+DB_PORT=5432
+DB_HOST=localhost
+DB_NAME=nestjs-blog
+DB_USERNAME=postgres
+DB_PASSWORD=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+DB_SYNC=true
+DB_AUTOLOAD=true
+
+# for test purpose
+S3_BUCKET=from_development
+PROFILE_API_KEY="somevalue"
+
+# JWT
+JWT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+JWT_TOKEN_AUDIENCE=localhost:3000
+JWT_TOKEN_ISSUER=localhost:3000
+JWT_ACCESS_TOKEN_TTL=3600
+JWT_REFRESH_TOKEN_TTL=172800 # two days (if I've calculated it correct in my head)
+
+# Google Authentication
+GOOGLE_CLIENT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+GOOGLE_CLIENT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.

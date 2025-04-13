@@ -40,15 +40,15 @@ console.log(`+${ENV}+`);
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        console.log('configService:', configService);
+        //console.log('configService:', configService);
         return {
           type: 'postgres',
           //entities: [User],
           autoLoadEntities: true,
           synchronize: true, // ACHTUNG: NUR in Development verwenden, es kann zu Datenverlust führen!
           port: configService.get<number>('database.port'),
-          username: configService.get('database.user'), // if I use this line it doesn't work
-          //username: process.env.DB_USERNAME,
+          //username: configService.get('database.user'), // if I use this line it doesn't work
+          username: process.env.DB_USERNAME,
           password: process.env.DB_PASSWORD,
           host: process.env.DB_HOST,
           database: 'nestjs-blog',

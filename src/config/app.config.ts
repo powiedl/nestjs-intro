@@ -2,6 +2,8 @@ import { registerAs } from '@nestjs/config';
 export default registerAs('appConfig', () => ({
   environment: process.env.NODE_ENV?.trim() || 'production',
   apiVersion: process.env.API_VERSION,
+  uploadthingToken: process.env.UPLOADTHING_TOKEN,
+  uploadthingSecretKey: process.env.UPLOADTHING_SECRET_KEY,
 }));
 
 /*

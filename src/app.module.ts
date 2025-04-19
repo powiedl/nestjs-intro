@@ -19,6 +19,7 @@ import { AuthenticationGuard } from './auth/guards/authentication/authentication
 import { AccessTokenGuard } from './auth/guards/access-token/access-token.guard';
 import { DataResponseInterceptor } from './common/interceptors/data-response/data-response.interceptor';
 import { UploadsModule } from './uploads/uploads.module';
+import { MailModule } from './mail/mail.module';
 import environmentValidation from './config/environment.validation';
 
 // User created modules
@@ -65,6 +66,7 @@ console.log(`+${ENV}+`);
     MetaOptionsModule,
     PaginationModule,
     UploadsModule,
+    MailModule,
     // /* synchrones verbinden mit der Datenbank */
     // TypeOrmModule.forRoot({
     //   type: 'postgres',

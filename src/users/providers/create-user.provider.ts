@@ -7,11 +7,11 @@ import {
   RequestTimeoutException,
 } from '@nestjs/common';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { AuthService } from 'src/auth/providers/auth.service';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HashingProvider } from 'src/auth/providers/hashing.provider';
+import { MailService } from 'src/mail/providers/mail.service';
 
 @Injectable()
 export class CreateUserProvider {
@@ -23,7 +23,7 @@ export class CreateUserProvider {
      */
     @Inject(forwardRef(() => HashingProvider))
     private hashingProvider: HashingProvider,
-    private readonly authService: AuthService,
+    private readonly mailService: MailService,
   ) {}
   public async createUser(
     createUserDto: CreateUserDto,
@@ -54,12 +54,17 @@ export class CreateUserProvider {
     });
     try {
       newUser = await this.usersRepository.save(newUser);
-      return newUser;
     } catch (error) {
       throw new InternalServerErrorException(
         'something went wrong while saving the user to the database',
         error,
       );
     }
+    try {
+      await this.mailService.sendUserWelcome(newUser);
+    } catch (error) {
+      console.log('ERROR Sending welcome mail', error);
+    }
+    return newUser;
   }
 }

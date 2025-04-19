@@ -4,6 +4,9 @@ export default registerAs('appConfig', () => ({
   apiVersion: process.env.API_VERSION,
   uploadthingToken: process.env.UPLOADTHING_TOKEN,
   uploadthingSecretKey: process.env.UPLOADTHING_SECRET_KEY,
+  mailHost: process.env.MAIL_HOST,
+  smtpUsername: process.env.SMTP_USERNAME,
+  smtpPassword: process.env.SMTP_PASSWORD,
 }));
 
 /*
